@@ -1,16 +1,37 @@
 #pragma once
 
-# define MAX_GRADE 150
-# define MIN_GRADE 1
+#include <exception>
+#include <iostream>
+#include <string>
 
- class Bureaucrat {
-    private:
-        std::string const name_;
-        unsigned int grade_;
-    public:
-        Bureaucrat(); // Default constructor
-        Bureaucrat(std::string const &name, unsigned int grade); // Parameterized constructor
-        Bureaucrat(Bureaucrat const &other); // Copy constructor
-        Bureaucrat &operator=(Bureaucrat const &other); // Copy assignment operator
-        ~Bureaucrat(); // Destructor
- }
+#define HIGHEST_GRADE 1
+#define LOWEST_GRADE 150
+
+class Bureaucrat {
+private:
+  std::string const name_;
+  int grade_;
+
+public:
+  Bureaucrat();
+  Bureaucrat(std::string const &name, int grade);
+  Bureaucrat(Bureaucrat const &other);
+  Bureaucrat &operator=(Bureaucrat const &other);
+  ~Bureaucrat();
+
+  std::string const &getName() const;
+  int getGrade() const;
+  void incrementGrade();
+  void decrementGrade();
+
+  class GradeTooHighException : public std::exception {
+  public:
+    virtual const char *what() const throw();
+  };
+  class GradeTooLowException : public std::exception {
+  public:
+    virtual const char *what() const throw();
+  };
+};
+
+std::ostream &operator<<(std::ostream &os, Bureaucrat const &obj);
